@@ -1,6 +1,8 @@
+import { Routes, Route } from 'react-router-dom'
 import TopNavbar from './TopNavbar'
 import Sidebar from './Sidebar'
-import JobsTrackerPage from './JobTracker'
+import JobsTrackerPage from '../pages/JobTracker'
+import DashboardTabs from '../pages/HomePage'
 
 const MainLayout = () => {
   return (
@@ -14,7 +16,13 @@ const MainLayout = () => {
         <Sidebar />
         
         {/* 右侧内容区域 */}
-        <JobsTrackerPage />
+        <div className="flex-1 overflow-auto">
+          <Routes>
+            <Route path="/" element={<DashboardTabs />} />
+            <Route path="/home" element={<DashboardTabs />} />
+            <Route path="/jobs-tracker" element={<JobsTrackerPage />} />
+          </Routes>
+        </div>
       </div>
     </div>
   )

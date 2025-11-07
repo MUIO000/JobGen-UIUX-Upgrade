@@ -1,7 +1,14 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import MainLayout from './components/MainLayout'
 
 function App() {
-  return <MainLayout />
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/*" element={<MainLayout />} />
+      </Routes>
+    </BrowserRouter>
+  )
 }
 
 export default App
