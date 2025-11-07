@@ -1,0 +1,39 @@
+[build]
+  # 构建命令
+  command = "npm run build"
+  # 发布目录（Vite构建后的输出目录）
+  publish = "dist"
+
+# 环境变量（如果需要）
+# [build.environment]
+#   NODE_VERSION = "20"
+
+# SPA路由重定向规则
+# 将所有非文件请求重定向到index.html，以支持React Router客户端路由
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# 安全头部配置（可选，推荐）
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+# 静态资源缓存配置（可选，优化性能）
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# HTML文件不缓存
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
