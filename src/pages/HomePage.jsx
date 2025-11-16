@@ -766,7 +766,10 @@ const HomePage = () => {
 
           {/* AI Career Coach - 进度条 */}
           <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-6 text-white shadow-lg">
-            <h2 className="text-xl font-bold mb-2">🤖 AI Career Coach: 12-Week Job Search Plan</h2>
+            <h2 className="text-xl font-bold mb-2"> 
+              <img src="src/assets/Icon_Homepage/project-plan.png" alt="Project Plan" className="w-8 h-8 inline-block mr-2" />
+              <span className="text-white">AI Career Coach: 12-Week Job Search Plan</span>
+            </h2>
             <p className="text-indigo-100 text-sm mb-4">12 Weeks</p>
             
             {/* 12周进度指示器 */}

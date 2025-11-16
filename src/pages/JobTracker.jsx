@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import ViewToggle from '../components/ui/ViewToggle'
+import JobDetailsModal from '../components/JobDetailsModal'
 
 // 任务卡片组件
 const TaskCard = ({ task, onTaskClick }) => {
@@ -107,6 +108,10 @@ const CardViewItem = ({ task, status, onTaskClick }) => {
 const JobTracker = () => {
   // View mode state
   const [viewMode, setViewMode] = useState('board') // 'board', 'list', 'card'
+  
+  // Job details modal state
+  const [selectedJob, setSelectedJob] = useState(null)
+  const [showJobDetails, setShowJobDetails] = useState(false)
   
   // 视图切换选项
   const viewOptions = [
@@ -258,7 +263,18 @@ const JobTracker = () => {
 
   // Handle task click event
   const handleTaskClick = (task) => {
-    alert(`Job Details:\nTitle: ${task.title}\nPriority: ${task.priority}`)
+    // 将 task 转换为 job 格式
+    const job = {
+      title: task.title,
+      company: task.description,
+      description: task.description || '',
+      responsibilities: task.responsibilities,
+      requirements: task.requirements,
+      priority: task.priority,
+      ...task
+    }
+    setSelectedJob(job)
+    setShowJobDetails(true)
   }
 
   return (
@@ -409,6 +425,18 @@ const JobTracker = () => {
           </div>
         )}
       </div>
+
+      {/* 工作详情模态框 */}
+      {selectedJob && (
+        <JobDetailsModal 
+          job={selectedJob}
+          isOpen={showJobDetails}
+          onClose={() => {
+            setShowJobDetails(false)
+            setSelectedJob(null)
+          }}
+        />
+      )}
     </div>
   )
 }

@@ -1,0 +1,177 @@
+{
+  "talkingPoints": {
+    "title": "Phone Screening - Talking Points",
+    "fitReason": "I'm a great fit for the Software Engineer role at Cuscal because I have a strong background in full-stack development with Java and React, and I've successfully delivered innovative software solutions that enhance user experiences, especially in the tech sector.",
+    "narrative": "I believe I'm a strong match for this role for a few reasons. First, my background in full-stack development, particularly with Java and React, has equipped me with the skills necessary to deliver, maintain, and improve scalable systems that are core to this role. Second, I bring end-to-end experience optimizing payments-related features to improve security and customer experience, which aligns directly with your needs. Lastly, I am passionate about adapting to security standards and ensuring that products meet market needs in a secure manner.",
+    "keyPoints": [
+      "Led the development of an online education platform, which aligns with your need for innovative experiences.",
+      "Achieved a 30% reduction in incident response time in API and system development, exactly what you're looking for.",
+      "Modernized payments by migrating legacy systems to AWS, enabling 99% availability and massive scale.",
+      "Cut overall latency by 25% for customer-facing APIs via caching and observability improvements.",
+      "Collaborated with cross-functional teams to deliver features in 100% reduction in query response time, relevant to the real-time data requirements at Cuscal."
+    ],
+    "keywords": ["Java", "React", "Microservices", "AWS", "Event Driven", "MySQL"],
+    "questionsToAsk": [
+      "What are the top 2-3 qualities you're hoping to see in the ideal candidate?",
+      "How does the engineering team partner with product to prioritize the roadmap?",
+      "What would success look like for this role in the first 90 days?"
+    ],
+    "tip": "If you get a surprise phone screen, ask for a moment, step into a quiet place, then click Screening Prep. All your materials will be ready. Read them, and respond with confidence."
+  },
+  "selfIntroduction": {
+    "title": "Self-Introduction",
+    "prompt": "Tell me about yourself.",
+    "guidance": "Keep it to about 90 seconds. Structure it as Present → Past → Future, highlight why this role is the natural next step, and end with why you're excited about the company.",
+    "structure": ["Present: Summarize your current role, scope, and areas of ownership.", "Past: Highlight 1-2 relevant wins that show measurable impact.", "Future: Connect your skills and interests to what this team is building."],
+    "sampleOpening": "I'm a full-stack engineer currently leading payments modernization at Cuscal, focusing on low-latency API design. Before that, I scaled a learning platform from 10k to 250k users at Edvantage. I'm excited about this role because your focus on secure real-time transactions lines up with exactly what I've been building for the last few years."
+  },
+  "generalQuestions": [
+    {
+      "question": "Tell me about yourself.",
+      "description": "What they're looking for: A concise story that walks through your background, key accomplishments, and why you're excited for this opportunity.",
+      "answerTip": "Start with your present role, highlight relevant past experiences, and connect it to the role you're applying for in under 2 minutes.",
+      "placeholder": "Add answer, key points, or what you're hoping to hear."
+    },
+    {
+      "question": "Why are you interested in this role?",
+      "description": "Focus on impact, growth, and the unique aspects of the opportunity.",
+      "placeholder": "Share impact, scope, or problems you want to solve."
+    },
+    {
+      "question": "Why do you want to work at this company?",
+      "description": "Tie your motivations to the company's mission, product, or culture.",
+      "placeholder": "Mention product, mission, or team rituals."
+    },
+    {
+      "question": "What are your greatest strengths?",
+      "description": "Pick 2-3 strengths relevant to the job and include examples.",
+      "placeholder": "Summarize strengths + example."
+    },
+    {
+      "question": "What's one area you're working to improve?",
+      "description": "Be honest and show growth mindset.",
+      "placeholder": "Share context + what you're doing."
+    },
+    {
+      "question": "What motivates you at work?",
+      "description": "Explain what keeps you energized day-to-day.",
+      "placeholder": "Tie motivation to role scope."
+    },
+    {
+      "question": "How do you prioritize your work when you have multiple deadlines?",
+      "description": "Show your framework for planning.",
+      "placeholder": "Outline approach or tools."
+    },
+    {
+      "question": "How do you handle stress or unexpected challenges?",
+      "description": "Demonstrate resilience and communication.",
+      "placeholder": "Share example + learning."
+    },
+    {
+      "question": "Why are you looking to leave your current role?",
+      "description": "Stay positive and focus on future fit.",
+      "placeholder": "Focus on growth and alignment."
+    },
+    {
+      "question": "Can you describe a time when you received constructive feedback — and how you responded?",
+      "description": "Share a brief STAR story showing growth.",
+      "placeholder": "Summarize Situation → Action → Result."
+    }
+  ],
+  "technicalQuestions": [
+    {"question": "Explain the difference between monolithic and microservices architectures.", "placeholder": "Outline pros, cons, when to use each."},
+    {"question": "How do you ensure API reliability at scale?", "placeholder": "Talk about retries, backoff, monitoring."},
+    {"question": "Describe how you would optimize a slow SQL query.", "placeholder": "Indexing, query plan, caching."},
+    {"question": "What is your approach to designing secure authentication flows?", "placeholder": "Mention OAuth, token rotation, audits."},
+    {"question": "How do you structure unit, integration, and end-to-end testing?", "placeholder": "Talk about pyramid philosophy."},
+    {"question": "Walk me through debugging a production incident end-to-end.", "placeholder": "Detection → Mitigation → Root cause."},
+    {"question": "How do you compare serverless vs containerized deployments?", "placeholder": "Cost, cold starts, scaling."},
+    {"question": "Explain eventual consistency and when it's acceptable.", "placeholder": "Use-case driven answer."},
+    {"question": "What metrics do you care about for backend performance?", "placeholder": "Latency, throughput, error budgets."},
+    {"question": "How do you manage secrets across environments?", "placeholder": "Vaults, rotation, least privilege."}
+  ],
+  "jobSpecificQuestions": [
+    {"question": "How have you partnered with designers or PMs to ship a feature end-to-end?", "placeholder": "Outline collaboration cadence."},
+    {"question": "Describe a time you influenced architecture without authority.", "placeholder": "Focus on facilitation."},
+    {"question": "How do you prioritize tech debt alongside new delivery?", "placeholder": "Frameworks + examples."},
+    {"question": "Give an example of improving an onboarding or delivery workflow.", "placeholder": "Impact + metrics."},
+    {"question": "Tell me about a feature launch that went wrong and how you handled it.", "placeholder": "Own it, share fix."},
+    {"question": "How do you communicate trade-offs with stakeholders?", "placeholder": "Visuals, docs, steering."},
+    {"question": "Describe how you mentor junior engineers.", "placeholder": "Systems, rituals."},
+    {"question": "What does 'secure by design' mean to you?", "placeholder": "Shift-left, reviews."},
+    {"question": "How do you stay ahead of industry or regulatory changes?", "placeholder": "Communities, experimentation."},
+    {"question": "What KPIs do you use to validate a release was successful?", "placeholder": "Stability, adoption, NPS."}
+  ],
+  "behavioralQuestions": [
+    {"question": "Tell me about a time you faced a significant challenge at work.", "placeholder": "STAR format."},
+    {"question": "Describe a situation where you had to work with a difficult team member.", "placeholder": "Empathy + boundary."},
+    {"question": "Give an example of when you showed leadership.", "placeholder": "Influence + outcomes."},
+    {"question": "Tell me about a time you failed and what you learned.", "placeholder": "Ownership + iteration."},
+    {"question": "Describe a situation where you had to meet a tight deadline.", "placeholder": "Planning + trade-offs."},
+    {"question": "Tell me about a time you had to make a difficult decision.", "placeholder": "Criteria + result."},
+    {"question": "Give an example of when you went above and beyond.", "placeholder": "Customer impact."},
+    {"question": "Describe how you handled a conflict with a colleague.", "placeholder": "Listening + resolve."},
+    {"question": "Share a time you persuaded leadership to change direction.", "placeholder": "Data + story."},
+    {"question": "Tell me about a time you drove change in a process.", "placeholder": "Before/after metrics."}
+  ],
+  "customQuestions": {
+    "title": "Your Custom Questions",
+    "description": "Capture role-specific or company-specific prompts, and refine them with AI before interviews.",
+    "categories": ["Leadership", "Culture", "Delivery", "Technical", "Team Rituals"],
+    "answerFormats": ["Direct Answer", "STAR", "Bullet Points", "Story Bank"],
+    "defaultQuestion": "How do you evaluate success in this department?",
+    "defaultAnswer": "Add answer, key points or what you're hoping to hear. Then click Refine to get a suggested answer."
+  },
+  "askInterviewer": [
+    {
+      "question": "What does a successful first 90 days look like in this role?",
+      "why": "Understand what success looks like early on — and how performance is measured.",
+      "listenFor": "Clear KPIs, onboarding milestones, early deliverables."
+    },
+    {
+      "question": "What are the team's biggest goals or challenges right now — and how could I help?",
+      "why": "Show that you're already thinking about impact.",
+      "listenFor": "Roadmap priorities, blockers, collaboration needs."
+    },
+    {
+      "question": "What's your favourite thing about working here?",
+      "why": "Gives insight into culture and motivation.",
+      "listenFor": "Authentic stories, values in action."
+    },
+    {
+      "question": "How would you describe the team's working style — and how do they collaborate best?",
+      "why": "Helps you understand rituals and expectations.",
+      "listenFor": "Meeting cadence, async norms, tooling."
+    },
+    {
+      "question": "What's something people often get wrong about this role — and how can I avoid that?",
+      "why": "Reveal unspoken expectations.",
+      "listenFor": "Gotchas, pet peeves, success patterns."
+    },
+    {
+      "question": "How is feedback typically shared here — casually, formally, or both?",
+      "why": "Understand coaching culture.",
+      "listenFor": "Cadence, rituals, peer feedback."
+    },
+    {
+      "question": "What learning or growth opportunities are available for someone in this position?",
+      "why": "Signals long-term thinking.",
+      "listenFor": "Mentorship, budget, conferences."
+    },
+    {
+      "question": "Can you share a recent win the team is proud of — and what made it happen?",
+      "why": "Shows the bar for excellence.",
+      "listenFor": "Teamwork, celebrations, impact stories."
+    },
+    {
+      "question": "What does support look like here when someone’s having a tough week?",
+      "why": "Understand empathy and resilience.",
+      "listenFor": "Manager involvement, team rituals, resources."
+    },
+    {
+      "question": "What are the next steps in the process — and is there anything else you need from me?",
+      "why": "Shows ownership of the process.",
+      "listenFor": "Timeline, deliverables, follow-ups."
+    }
+  ]
+}

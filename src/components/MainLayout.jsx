@@ -3,6 +3,11 @@ import TopNavbar from './TopNavbar'
 import Sidebar from './Sidebar'
 import JobsTrackerPage from '../pages/JobTracker'
 import DashboardTabs from '../pages/HomePage'
+import ApplicationTracker from '../pages/ApplicationTracker'
+import InterviewPrep from '../pages/InterviewPrep'
+import ResumeBuilder from '../pages/ResumeBuilder'
+import CoverLetterBuilder from '../pages/CoverLetterBuilder'
+import MyWorkspace from '../pages/MyWorkspace'
 
 const MainLayout = () => {
   return (
@@ -21,6 +26,11 @@ const MainLayout = () => {
             <Route path="/" element={<DashboardTabs />} />
             <Route path="/home" element={<DashboardTabs />} />
             <Route path="/jobs-tracker" element={<JobsTrackerPage />} />
+            <Route path="/application-tracker" element={<ApplicationTracker />} />
+            <Route path="/interview-prep" element={<InterviewPrep />} />
+            <Route path="/resumes-builder" element={<ResumeBuilder />} />
+            <Route path="/cover-letter" element={<CoverLetterBuilder />} />
+            <Route path="/my-workspace" element={<MyWorkspace />} />
           </Routes>
         </div>
       </div>
