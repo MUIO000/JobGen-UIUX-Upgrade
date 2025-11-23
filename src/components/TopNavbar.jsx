@@ -9,6 +9,14 @@ const TopNavbar = () => {
 
       {/* Right side - Notifications and User */}
       <div className="flex items-center gap-4">
+        {/* Blog Button */}
+        <button 
+          className="px-4 py-1.5 bg-cyan-500 hover:bg-cyan-600 text-white rounded-full text-sm font-semibold transition-all hover:scale-105 shadow-md"
+          onClick={() => window.location.href = '/blog'}
+        >
+          📚 Blog
+        </button>
+
         {/* Notification Icon */}
         <button className="relative">
           <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">

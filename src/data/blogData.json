@@ -1,0 +1,368 @@
+{
+  "categories": [
+    {
+      "id": "career-paths",
+      "name": "Career Architecture",
+      "description": "Planning your tech stack and career trajectory",
+      "icon": "GitCommit",
+      "color": "from-slate-500 to-zinc-500"
+    },
+    {
+      "id": "resume-docs",
+      "name": "Documentation (Resume)",
+      "description": "Building your source code: Resume & Cover Letter",
+      "icon": "FileCode",
+      "color": "from-blue-500 to-indigo-500"
+    },
+    {
+      "id": "job-search",
+      "name": "Deployment (Search)",
+      "description": "Distributing your application to the market",
+      "icon": "Rocket",
+      "color": "from-cyan-500 to-sky-500"
+    },
+    {
+      "id": "interviews",
+      "name": "Testing (Interviews)",
+      "description": "Unit tests and integration tests for your skills",
+      "icon": "Beaker",
+      "color": "from-violet-500 to-purple-500"
+    },
+    {
+      "id": "compensation",
+      "name": "Release (Offer)",
+      "description": "Negotiation logic and signing the SLA",
+      "icon": "Tag",
+      "color": "from-emerald-500 to-green-500"
+    },
+    {
+      "id": "stories",
+      "name": "System Logs",
+      "description": "Success stories and user retrospective logs",
+      "icon": "Scroll",
+      "color": "from-amber-500 to-orange-500"
+    }
+  ],
+  "timeline": [
+    {
+      "id": "phase1",
+      "step": "init",
+      "title": "Phase 1: Initialization",
+      "subtitle": "Career Planning & Architecture",
+      "description": "Like designing a system architecture. Before writing a single line of code, decide on your tech stack and KPIs.",
+      "color": "from-slate-400 to-zinc-500",
+      "icon": "Terminal",
+      "articles": ["article-1-1", "article-1-2", "article-1-3", "article-1-4"],
+      "cta": {
+        "text": "Initialize Workspace",
+        "link": "/my-workspace"
+      }
+    },
+    {
+      "id": "phase2",
+      "step": "build",
+      "title": "Phase 2: Build",
+      "subtitle": "Resume & Documentation",
+      "description": "Writing your source code. Your resume, LinkedIn, and cover letter are the documentation for your career.",
+      "color": "from-blue-400 to-indigo-500",
+      "icon": "FileCode",
+      "articles": ["article-2-1", "article-2-2", "article-2-3", "article-2-4", "article-2-5"],
+      "cta": {
+        "text": "Build Resume",
+        "link": "/resumes-builder"
+      }
+    },
+    {
+      "id": "phase3",
+      "step": "deploy",
+      "title": "Phase 3: Deploy",
+      "subtitle": "Distribution & Monitoring",
+      "description": "Deploying to production. Stop 'spray and pray'—monitor your applications like a DevOps engineer.",
+      "color": "from-cyan-400 to-sky-500",
+      "icon": "Rocket",
+      "articles": ["article-3-1", "article-3-2", "article-3-3", "article-3-4", "article-3-5"],
+      "cta": {
+        "text": "Deploy Applications",
+        "link": "/jobs-tracker"
+      }
+    },
+    {
+      "id": "phase4",
+      "step": "test",
+      "title": "Phase 4: Test",
+      "subtitle": "Interviews & Verification",
+      "description": "Running unit tests (behavioral) and integration tests (system design). Validate your skills under pressure.",
+      "color": "from-violet-400 to-purple-500",
+      "icon": "Beaker",
+      "articles": ["article-4-1", "article-4-2", "article-4-3", "article-4-4", "article-4-5"],
+      "cta": {
+        "text": "Run Mock Tests",
+        "link": "/interview-prep"
+      }
+    },
+    {
+      "id": "phase5",
+      "step": "release",
+      "title": "Phase 5: Release",
+      "subtitle": "Offer & Negotiation",
+      "description": "The Go-Live moment. Negotiating the SLA (salary) and handling race conditions (multiple offers).",
+      "color": "from-emerald-400 to-green-500",
+      "icon": "Tag",
+      "articles": ["article-5-1", "article-5-2", "article-5-3", "article-5-4"],
+      "cta": {
+        "text": "View Offer Status",
+        "link": "/application-tracker"
+      }
+    },
+    {
+      "id": "phase6",
+      "step": "logs",
+      "title": "Phase 6: Logs",
+      "subtitle": "Retrospective & Stories",
+      "description": "System logs and retrospectives. Learn from successful deployments and debug previous failures.",
+      "color": "from-amber-400 to-orange-500",
+      "icon": "Scroll",
+      "articles": ["article-6-1", "article-6-2", "article-6-3"],
+      "cta": {
+        "text": "View Success Metrics",
+        "link": "/home"
+      }
+    }
+  ],
+  "articles": [
+    {
+      "id": "article-1-1",
+      "title": "Full-Stack vs. Specialized: Choosing Your Career Architecture",
+      "excerpt": "Deciding your 'tech stack' for 2026. Should you generalize or specialize?",
+      "category": "career-paths",
+      "readTime": "6 min read",
+      "author": "JobGen Architect",
+      "date": "2025-11-20"
+    },
+    {
+      "id": "article-1-2",
+      "title": "Refactoring Your Career: How to Pivot from Non-Tech",
+      "excerpt": "A guide to refactoring your professional history for a new codebase.",
+      "category": "career-paths",
+      "readTime": "8 min read",
+      "author": "Sarah Chen",
+      "date": "2025-11-18"
+    },
+    {
+      "id": "article-1-3",
+      "title": "Defining Your KPIs: What 'Success' Looks Like",
+      "excerpt": "Set your success metrics before you start the application process.",
+      "category": "career-paths",
+      "readTime": "5 min read",
+      "author": "Mike Ross",
+      "date": "2025-11-15"
+    },
+    {
+      "id": "article-1-4",
+      "title": "The Junior to Senior Migration Guide",
+      "excerpt": "Steps to migrate your role permissions from read-only to admin.",
+      "category": "career-paths",
+      "readTime": "7 min read",
+      "author": "David Kim",
+      "date": "2025-11-12"
+    },
+    {
+      "id": "article-2-1",
+      "title": "Resume.md: How to Write for Machines (ATS) and Humans",
+      "excerpt": "Optimizing your documentation for the parser (ATS) and the end-user (Recruiter).",
+      "category": "resume-docs",
+      "readTime": "6 min read",
+      "author": "Emma Watson",
+      "date": "2025-11-22"
+    },
+    {
+      "id": "article-2-2",
+      "title": "Version Control for Resumes: Managing Multiple Target Roles",
+      "excerpt": "How to branch your resume for different job descriptions.",
+      "category": "resume-docs",
+      "readTime": "5 min read",
+      "author": "JobGen Team",
+      "date": "2025-11-21"
+    },
+    {
+      "id": "article-2-3",
+      "title": "Debug Your Resume: 9 Syntax Errors That Crash Applications",
+      "excerpt": "Common bugs that cause immediate rejection exceptions.",
+      "category": "resume-docs",
+      "readTime": "4 min read",
+      "author": "Alex Rivera",
+      "date": "2025-11-19"
+    },
+    {
+      "id": "article-2-4",
+      "title": "Cover Letters Are Not Deprecated",
+      "excerpt": "Why this legacy feature is still supported in 2025 and how to write one fast.",
+      "category": "resume-docs",
+      "readTime": "5 min read",
+      "author": "Lisa Morgan",
+      "date": "2025-11-17"
+    },
+    {
+      "id": "article-2-5",
+      "title": "The 'About Me' Section: Your README.md File",
+      "excerpt": "Writing a compelling project introduction for yourself.",
+      "category": "resume-docs",
+      "readTime": "4 min read",
+      "author": "Chris Park",
+      "date": "2025-11-16"
+    },
+    {
+      "id": "article-3-1",
+      "title": "Stop Spray and Pray: Implementing a Kanban Workflow",
+      "excerpt": "Move from chaotic scripts to a structured CI/CD pipeline for applications.",
+      "category": "job-search",
+      "readTime": "7 min read",
+      "author": "Jordan Lee",
+      "date": "2025-11-23"
+    },
+    {
+      "id": "article-3-2",
+      "title": "LinkedIn SEO: Optimizing for Search Algorithms",
+      "excerpt": "Reverse engineering the recruiter search query.",
+      "category": "job-search",
+      "readTime": "6 min read",
+      "author": "Rachel Green",
+      "date": "2025-11-14"
+    },
+    {
+      "id": "article-3-3",
+      "title": "JobGen vs. Spreadsheets: Why You Need a Database",
+      "excerpt": "Migrating your job search data from flat files to a relational system.",
+      "category": "job-search",
+      "readTime": "5 min read",
+      "author": "Tech Lead",
+      "date": "2025-11-10"
+    },
+    {
+      "id": "article-3-4",
+      "title": "Automating the Hunt: Best AI Search Tools Integration",
+      "excerpt": "Setting up cron jobs and agents for your job search.",
+      "category": "job-search",
+      "readTime": "6 min read",
+      "author": "AI Coach",
+      "date": "2025-11-08"
+    },
+    {
+      "id": "article-3-5",
+      "title": "Handling 404 Errors: What to Do When You Get Ghosted",
+      "excerpt": "Error handling strategies when the endpoint doesn't respond.",
+      "category": "job-search",
+      "readTime": "5 min read",
+      "author": "Mental Health Bot",
+      "date": "2025-11-05"
+    },
+    {
+      "id": "article-4-1",
+      "title": "The STAR Method: Structured Data for Behavioral Questions",
+      "excerpt": "Formatting your responses as JSON objects: Situation, Task, Action, Result.",
+      "category": "interviews",
+      "readTime": "8 min read",
+      "author": "Jennifer Adams",
+      "date": "2025-11-21"
+    },
+    {
+      "id": "article-4-2",
+      "title": "System Design Interviews: A Cheat Sheet",
+      "excerpt": "High-availability answers for high-scale questions.",
+      "category": "interviews",
+      "readTime": "12 min read",
+      "author": "Senior Architect",
+      "date": "2025-11-19"
+    },
+    {
+      "id": "article-4-3",
+      "title": "Live Coding Anxiety: How to Compile Thoughts Under Pressure",
+      "excerpt": "Handling runtime errors in your brain during a live demo.",
+      "category": "interviews",
+      "readTime": "7 min read",
+      "author": "Taylor Brooks",
+      "date": "2025-11-15"
+    },
+    {
+      "id": "article-4-4",
+      "title": "Post-Interview Protocol: The 'Thank You' Template",
+      "excerpt": "The handshake protocol to close the connection gracefully.",
+      "category": "interviews",
+      "readTime": "3 min read",
+      "author": "HR Insider",
+      "date": "2025-11-12"
+    },
+    {
+      "id": "article-4-5",
+      "title": "Mock Testing: Why You Need to Practice Before Production",
+      "excerpt": "Running simulations in a sandbox environment before the main event.",
+      "category": "interviews",
+      "readTime": "6 min read",
+      "author": "Coach AI",
+      "date": "2025-11-10"
+    },
+    {
+      "id": "article-5-1",
+      "title": "Negotiating Salary: It's Just Business Logic",
+      "excerpt": "Variables, constants, and functions in the compensation equation.",
+      "category": "compensation",
+      "readTime": "6 min read",
+      "author": "Casey Johnson",
+      "date": "2025-11-20"
+    },
+    {
+      "id": "article-5-2",
+      "title": "Understanding Equity: RSUs vs. Options",
+      "excerpt": "Decoding the vesting schedule and strike price logic.",
+      "category": "compensation",
+      "readTime": "8 min read",
+      "author": "Finance Guru",
+      "date": "2025-11-18"
+    },
+    {
+      "id": "article-5-3",
+      "title": "Contract Review: Spotting Bugs in Your Agreement",
+      "excerpt": "Code review for your employment contract. Catching edge cases.",
+      "category": "compensation",
+      "readTime": "9 min read",
+      "author": "Legal Counsel",
+      "date": "2025-11-15"
+    },
+    {
+      "id": "article-5-4",
+      "title": "Multiple Offers: How to Handle a Race Condition",
+      "excerpt": "Concurrency control when multiple threads (companies) want to lock you.",
+      "category": "compensation",
+      "readTime": "5 min read",
+      "author": "Career Strategist",
+      "date": "2025-11-11"
+    },
+    {
+      "id": "article-6-1",
+      "title": "User Log: How Alex Reduced Application Time by 60%",
+      "excerpt": "Performance optimization case study using JobGen.",
+      "category": "stories",
+      "readTime": "5 min read",
+      "author": "Alex (User)",
+      "date": "2025-11-22"
+    },
+    {
+      "id": "article-6-2",
+      "title": "Case Study: From Bootcamp to Big Tech",
+      "excerpt": "A full system migration story: 3 months to production.",
+      "category": "stories",
+      "readTime": "7 min read",
+      "author": "Sarah (Alumni)",
+      "date": "2025-11-14"
+    },
+    {
+      "id": "article-6-3",
+      "title": "Why I Deleted Excel: A Developer's Retrospective",
+      "excerpt": "Refactoring the job search stack: Deprecating spreadsheets.",
+      "category": "stories",
+      "readTime": "6 min read",
+      "author": "Dev Team",
+      "date": "2025-11-09"
+    }
+  ]
+}
