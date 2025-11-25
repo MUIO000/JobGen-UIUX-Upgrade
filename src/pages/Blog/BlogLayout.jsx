@@ -76,7 +76,7 @@ const BlogLayout = ({ children }) => {
               <img 
                 src="/jobgenLogo.png" 
                 alt="JobGen Logo" 
-                className="w-12 h-12 brightness-110 contrast-110 filter mb-4" 
+                className="w-12 h-12 brightness-110 contrast-110 filter mb-4 bg-white rounded-full p-2"  
               />
               <h3 className="text-xl font-bold mb-2">JobGen</h3>
               <p className="text-slate-400 text-sm">

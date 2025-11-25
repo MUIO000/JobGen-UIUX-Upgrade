@@ -72,7 +72,7 @@ const CTASection = () => {
             <input
               type="email"
               placeholder="Enter your email address"
-              className="flex-1 px-6 py-4 rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-white/30 shadow-lg font-medium"
+              className="flex-1 px-6 py-4 rounded-2xl text-slate-900 placeholder-white-400 focus:outline-none focus:ring-4 focus:ring-white/30 shadow-lg font-medium border-2 border-white/30"
             />
             <motion.button
               className="px-8 py-4 bg-white text-sky-600 rounded-2xl font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all flex items-center justify-center gap-2"

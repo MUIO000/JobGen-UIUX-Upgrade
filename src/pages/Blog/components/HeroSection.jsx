@@ -3,14 +3,19 @@ import { useState, useEffect } from 'react';
 import { ArrowDown, Terminal, Code2, Sparkles } from 'lucide-react';
 import { fadeInUp, staggerContainer } from '../../../utils/animations';
 
-const TypewriterText = () => {
+const TypewriterText = ({ disabled = false }) => {
   const fullText = "waiting for input";
-  const [displayedText, setDisplayedText] = useState('');
+  const [displayedText, setDisplayedText] = useState(() => (disabled ? fullText : ''));
   const [isDeleting, setIsDeleting] = useState(false);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(() => (disabled ? fullText.length : 0));
   const [waitTime, setWaitTime] = useState(0);
 
   useEffect(() => {
+    if (disabled) {
+      setDisplayedText(fullText);
+      return;
+    }
+
     const timeout = setTimeout(() => {
       if (waitTime > 0) {
         setWaitTime(prev => prev - 1);
@@ -37,7 +42,7 @@ const TypewriterText = () => {
     }, 50); // Typing speed: 50ms per character
 
     return () => clearTimeout(timeout);
-  }, [currentIndex, isDeleting, waitTime, fullText]);
+  }, [currentIndex, isDeleting, waitTime, fullText, disabled]);
 
   return (
     <span className="font-medium">
@@ -47,13 +52,13 @@ const TypewriterText = () => {
   );
 };
 
-const HeroSection = () => {
+const HeroSection = ({ disableAnimations = false }) => {
   return (
     <motion.section 
       className="relative w-full min-h-[90vh] bg-gradient-to-br from-white via-sky-50 to-cyan-50 flex flex-col justify-start items-center overflow-hidden pt-24 md:pt-32"
-      initial="hidden"
-      animate="visible"
-      variants={staggerContainer}
+      initial={disableAnimations ? false : "hidden"}
+      animate={disableAnimations ? false : "visible"}
+      variants={disableAnimations ? undefined : staggerContainer}
     >
       {/* A. Background Elements */}
       {/* 1. Grid Background (Light) */}
@@ -62,11 +67,11 @@ const HeroSection = () => {
       {/* 2. Floating Orbs */}
       <motion.div 
         className="absolute top-20 left-20 w-72 h-72 bg-sky-300/20 rounded-full blur-3xl"
-        animate={{
+        animate={disableAnimations ? undefined : {
           scale: [1, 1.2, 1],
           opacity: [0.3, 0.5, 0.3],
         }}
-        transition={{
+        transition={disableAnimations ? undefined : {
           duration: 8,
           repeat: Infinity,
           ease: "easeInOut"
@@ -74,11 +79,11 @@ const HeroSection = () => {
       />
       <motion.div 
         className="absolute bottom-20 right-20 w-96 h-96 bg-cyan-300/20 rounded-full blur-3xl"
-        animate={{
+        animate={disableAnimations ? undefined : {
           scale: [1.2, 1, 1.2],
           opacity: [0.4, 0.3, 0.4],
         }}
-        transition={{
+        transition={disableAnimations ? undefined : {
           duration: 10,
           repeat: Infinity,
           ease: "easeInOut"
@@ -92,7 +97,9 @@ const HeroSection = () => {
           {/* Badge */}
           <motion.div 
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-sky-200 shadow-sm text-sm font-medium text-sky-700"
-            variants={fadeInUp}
+            variants={disableAnimations ? undefined : fadeInUp}
+            initial={disableAnimations ? false : undefined}
+            animate={disableAnimations ? false : undefined}
           >
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
@@ -104,7 +111,9 @@ const HeroSection = () => {
 
           <motion.h1 
             className="text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 tracking-tight leading-[1.1]"
-            variants={fadeInUp}
+            variants={disableAnimations ? undefined : fadeInUp}
+            initial={disableAnimations ? false : undefined}
+            animate={disableAnimations ? false : undefined}
           >
             Don't just apply.
             <br />
@@ -115,7 +124,9 @@ const HeroSection = () => {
           
           <motion.p 
             className="text-xl text-slate-600 max-w-xl mx-auto lg:mx-0 leading-relaxed"
-            variants={fadeInUp}
+            variants={disableAnimations ? undefined : fadeInUp}
+            initial={disableAnimations ? false : undefined}
+            animate={disableAnimations ? false : undefined}
           >
             The definitive documentation for the modern developer's job search. 
             From <code className="bg-sky-100 px-2 py-1 rounded text-sky-700 font-mono text-base">init</code> resume 
@@ -125,7 +136,9 @@ const HeroSection = () => {
           {/* CTA Buttons */}
           <motion.div 
             className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4"
-            variants={fadeInUp}
+            variants={disableAnimations ? undefined : fadeInUp}
+            initial={disableAnimations ? false : undefined}
+            animate={disableAnimations ? false : undefined}
           >
             <button 
               className="group px-8 py-4 bg-gradient-to-r from-sky-500 to-cyan-500 hover:from-sky-600 hover:to-cyan-600 text-white rounded-2xl font-semibold transition-all flex items-center justify-center gap-2 shadow-lg shadow-sky-500/25 hover:shadow-xl hover:shadow-sky-500/30 hover:-translate-y-0.5"
@@ -145,9 +158,9 @@ const HeroSection = () => {
         {/* C. Right Visual (Terminal - Light Theme) */}
         <motion.div 
           className="hidden lg:block relative"
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          initial={disableAnimations ? false : { opacity: 0, x: 20 }}
+          animate={disableAnimations ? false : { opacity: 1, x: 0 }}
+          transition={disableAnimations ? undefined : { duration: 0.8, delay: 0.2 }}
         >
           <div className="relative rounded-2xl bg-white border-2 border-slate-200 shadow-2xl overflow-hidden font-mono text-sm">
             {/* Terminal Header */}
@@ -185,9 +198,9 @@ const HeroSection = () => {
                 <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
                   <motion.div 
                     className="h-full bg-gradient-to-r from-emerald-400 to-emerald-500 rounded-full"
-                    initial={{ width: 0 }}
-                    animate={{ width: "90%" }}
-                    transition={{ duration: 1.5, delay: 0.5 }}
+                    initial={disableAnimations ? false : { width: 0 }}
+                    animate={disableAnimations ? false : { width: "90%" }}
+                    transition={disableAnimations ? undefined : { duration: 1.5, delay: 0.5 }}
                   />
                 </div>
               </div>
@@ -200,9 +213,9 @@ const HeroSection = () => {
                 <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
                    <motion.div 
                      className="h-full bg-gradient-to-r from-sky-400 to-cyan-500 rounded-full"
-                     initial={{ width: 0 }}
-                     animate={{ width: "98%" }}
-                     transition={{ duration: 1.5, delay: 1 }}
+                     initial={disableAnimations ? false : { width: 0 }}
+                     animate={disableAnimations ? false : { width: "98%" }}
+                     transition={disableAnimations ? undefined : { duration: 1.5, delay: 1 }}
                    />
                 </div>
               </div>
@@ -210,7 +223,7 @@ const HeroSection = () => {
               <div className="flex gap-2 pt-2 text-slate-700">
                 <span className="text-emerald-500 font-bold">➜</span>
                 <span className="text-sky-500 font-bold">~</span>
-                <TypewriterText />
+                <TypewriterText disabled={disableAnimations} />
               </div>
             </div>
           </div>
@@ -223,9 +236,9 @@ const HeroSection = () => {
       {/* D. Visual Connector */}
       <motion.div 
         className="absolute bottom-0 left-1/2 -translate-x-1/2 flex flex-col items-center"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.5, duration: 0.5 }}
+        initial={disableAnimations ? false : { opacity: 0, y: 20 }}
+        animate={disableAnimations ? false : { opacity: 1, y: 0 }}
+        transition={disableAnimations ? undefined : { delay: 1.5, duration: 0.5 }}
       >
         <span className="text-xs font-mono text-slate-400 mb-4 tracking-widest uppercase font-semibold">
           Initialize Pipeline
@@ -234,10 +247,10 @@ const HeroSection = () => {
         <div className="relative flex flex-col items-center">
           <motion.div
             className="flex flex-col gap-1 items-center"
-            animate={{ 
+            animate={disableAnimations ? undefined : { 
               y: [0, 8, 0],
             }}
-            transition={{
+            transition={disableAnimations ? undefined : {
               duration: 2,
               repeat: Infinity,
               ease: "easeInOut"
@@ -249,10 +262,10 @@ const HeroSection = () => {
           </motion.div>
           <motion.div
             className="absolute top-3 flex flex-col gap-2"
-            animate={{
+            animate={disableAnimations ? undefined : {
               opacity: [0, 1, 0]
             }}
-            transition={{
+            transition={disableAnimations ? undefined : {
               duration: 2,
               repeat: Infinity,
               ease: "easeInOut"

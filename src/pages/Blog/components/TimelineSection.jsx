@@ -16,9 +16,11 @@
 
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Terminal, FileCode, Rocket, Beaker, Tag, Scroll, ArrowRight } from 'lucide-react';
 import { fadeInLeft, fadeInRight, timelineItem } from '../../../utils/animations';
 import blogData from '../../../data/blogData.json';
+import '../css/TimelineSection.css';
 
 // Import phase images
 import phase1Image from '../images/phase-images/phase-1.jpg';
@@ -76,6 +78,46 @@ const phaseIcons = {
   logs: Scroll
 };
 
+// Header section with CSS animation
+const HeaderSection = () => {
+  const ref = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1, rootMargin: '0px' }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className={`timeline-css-animate-wrapper ${isVisible ? 'timeline-animate-fade-in-up' : ''}`}
+    >
+      <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
+        The Career{' '}
+        <span className="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent font-mono">
+          CI/CD Pipeline
+        </span>
+      </h2>
+      <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+        A systematic workflow to build, test, and deploy your career.
+      </p>
+    </div>
+  );
+};
+
 const FiberOpticTimeline = () => {
   const containerRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -124,21 +166,7 @@ const FiberOpticTimeline = () => {
     >
       {/* Section Header - Outside of scroll container */}
       <div className="text-center pt-32 pb-16 px-4 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
-            The Career{' '}
-            <span className="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent font-mono">
-              CI/CD Pipeline
-            </span>
-          </h2>
-          <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-            A systematic workflow to build, test, and deploy your career.
-          </p>
-        </motion.div>
+        <HeaderSection />
       </div>
 
       {/* Timeline Scroll Container - This is the scroll target */}
@@ -276,14 +304,100 @@ const TimelineNode = ({ step, index, scrollYProgress }) => {
   );
 };
 
-const ContentCard = ({ step, articles, isActive }) => {
+// Article card with CSS animation
+const ArticleCard = ({ article, index }) => {
+  const ref = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.2, rootMargin: '0px' }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  const delayClass = index === 0 ? 'timeline-animate-fade-in-up-delay-1' : 
+                     index === 1 ? 'timeline-animate-fade-in-up-delay-2' : 
+                     'timeline-animate-fade-in-up-delay-3';
+
+  const handleClick = () => {
+    // Save scroll position and flag hero animation skip before navigating
+    sessionStorage.setItem('blogScrollPosition', window.scrollY.toString());
+    sessionStorage.setItem('skipHeroAnimation', 'true');
+    navigate(`/blog/article/${article.id}`);
+  };
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className="space-y-4"
+    <div
+      ref={ref}
+      onClick={handleClick}
+      className={`group relative rounded-xl border-2 border-slate-100 bg-white hover:border-sky-200 hover:shadow-lg transition-all cursor-pointer overflow-hidden timeline-css-animate-wrapper ${isVisible ? delayClass : ''}`}
+    >
+      <div className="flex items-center gap-4 p-4">
+        {/* Thumbnail Image - Optimized */}
+        <div className="relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border border-slate-200 bg-slate-100">
+          <img
+            src={articleImages[index % 3]}
+            alt={article.title}
+            decoding="async"
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-sky-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        </div>
+
+        {/* Text Content */}
+        <div className="flex-1 min-w-0">
+          <h4 className="text-sm font-semibold text-slate-800 group-hover:text-cyan-600 transition-colors line-clamp-2">
+            {article.title}
+          </h4>
+          <p className="text-xs text-slate-500 mt-1 font-mono">
+            {article.category}
+          </p>
+        </div>
+
+        {/* Arrow Icon */}
+        <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-cyan-500 group-hover:translate-x-1 transition-all flex-shrink-0" />
+      </div>
+    </div>
+  );
+};
+
+const ContentCard = ({ step, articles, isActive }) => {
+  const ref = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.3, rootMargin: '0px' }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      className={`space-y-4 timeline-css-animate-wrapper ${isVisible ? 'timeline-animate-fade-in-up' : ''}`}
     >
       {/* Phase Tag - Optimized with CSS transitions */}
       <div
@@ -316,44 +430,7 @@ const ContentCard = ({ step, articles, isActive }) => {
         </p>
         <div className="grid grid-cols-1 gap-3">
           {articles.map((article, i) => (
-            <motion.div
-              key={article.id}
-              className="group relative rounded-xl border-2 border-slate-100 bg-white hover:border-sky-200 hover:shadow-lg transition-all cursor-pointer overflow-hidden"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{
-                delay: i * 0.1,
-                duration: 0.4,
-                ease: "easeOut"
-              }}
-            >
-              <div className="flex items-center gap-4 p-4">
-                {/* Thumbnail Image - Optimized */}
-                <div className="relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border border-slate-200 bg-slate-100">
-                  <img
-                    src={articleImages[i % 3]}
-                    alt={article.title}
-                    decoding="async"
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-sky-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
-
-                {/* Text Content */}
-                <div className="flex-1 min-w-0">
-                  <h4 className="text-sm font-semibold text-slate-800 group-hover:text-cyan-600 transition-colors line-clamp-2">
-                    {article.title}
-                  </h4>
-                  <p className="text-xs text-slate-500 mt-1 font-mono">
-                    {article.category}
-                  </p>
-                </div>
-
-                {/* Arrow Icon */}
-                <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-cyan-500 group-hover:translate-x-1 transition-all flex-shrink-0" />
-              </div>
-            </motion.div>
+            <ArticleCard key={article.id} article={article} index={i} />
           ))}
         </div>
       </div>
@@ -366,20 +443,43 @@ const ContentCard = ({ step, articles, isActive }) => {
         {step.cta.text}
         <ArrowRight className="w-4 h-4" />
       </button>
-    </motion.div>
+    </div>
   );
 };
 
 const ImageCard = ({ step, icon: Icon, index, scrollYProgress }) => {
   const imageUrl = phaseImages[index] || phase1Image;
+  const ref = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
 
   // Image specific parallax/fade animation (subtle scale effect)
   // scrollYProgress is provided from TimelineNode which gets it from FiberOpticTimeline
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.9, 1, 0.9]);
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.3, rootMargin: '0px' }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
+    <div
+      ref={ref}
+      className={`hidden md:block h-full timeline-css-animate-wrapper ${isVisible ? 'timeline-animate-fade-in-up' : ''}`}
+    >
     <motion.div
-      className="hidden md:block h-full"
+        className="h-full"
       style={{ 
         scale,
         willChange: 'transform' // Hint optimization
@@ -416,6 +516,7 @@ const ImageCard = ({ step, icon: Icon, index, scrollYProgress }) => {
         <div className="absolute bottom-4 right-4 w-3 h-3 border-b-2 border-r-2 border-white/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
     </motion.div>
+    </div>
   );
 };
 

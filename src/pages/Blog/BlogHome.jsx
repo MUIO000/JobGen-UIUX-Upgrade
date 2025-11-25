@@ -1,4 +1,5 @@
 import { AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import BlogLayout from './BlogLayout';
 import HeroSection from './components/HeroSection';
 import TimelineSection from './components/TimelineSection';
@@ -38,17 +39,80 @@ const imagesToPreload = [
 ];
 
 const BlogHome = () => {
-  const { loading, progress } = useImagePreloader(imagesToPreload);
+  const [hasLoaded, setHasLoaded] = useState(() => {
+    return sessionStorage.getItem('blogLoaded') === 'true';
+  });
+  const [skipHeroAnimation] = useState(() => sessionStorage.getItem('skipHeroAnimation') === 'true');
+  
+  const { loading, progress } = useImagePreloader(hasLoaded ? [] : imagesToPreload);
+
+  useEffect(() => {
+    if (!loading) {
+      sessionStorage.setItem('blogLoaded', 'true');
+      setHasLoaded(true);
+    }
+  }, [loading]);
+
+  // Save scroll position before leaving
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      sessionStorage.setItem('blogScrollPosition', window.scrollY.toString());
+    };
+
+    const handleScroll = () => {
+      // Throttle scroll position saving
+      clearTimeout(window.blogScrollTimeout);
+      window.blogScrollTimeout = setTimeout(() => {
+        sessionStorage.setItem('blogScrollPosition', window.scrollY.toString());
+      }, 100);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      clearTimeout(window.blogScrollTimeout);
+    };
+  }, []);
+
+  // Clear the skip flag once we're back on the blog (without re-enabling animations mid-session)
+  useEffect(() => {
+    if (!loading && skipHeroAnimation) {
+      sessionStorage.removeItem('skipHeroAnimation');
+    }
+  }, [loading, skipHeroAnimation]);
+
+  // Restore scroll position after content loads
+  useEffect(() => {
+    if (!loading && hasLoaded) {
+      const savedPosition = sessionStorage.getItem('blogScrollPosition');
+      if (savedPosition) {
+        // Wait a bit for DOM to fully render, then restore scroll position
+        const timer = setTimeout(() => {
+          window.scrollTo({
+            top: parseInt(savedPosition, 10),
+            behavior: 'auto' // Instant scroll, no animation
+          });
+        }, 100);
+        
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [loading, hasLoaded]);
+
+  const showLoading = loading && !hasLoaded;
 
   return (
     <>
       <AnimatePresence mode="wait">
-        {loading && <LoadingScreen key="loading" progress={progress} />}
+        {showLoading && <LoadingScreen key="loading" progress={progress} />}
       </AnimatePresence>
       
-      {!loading && (
+      {(!showLoading) && (
         <BlogLayout>
-          <HeroSection />
+          <HeroSection disableAnimations={skipHeroAnimation} />
           <TimelineSection />
           <CategoryGrid />
           <CTASection />
