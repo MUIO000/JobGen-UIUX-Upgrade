@@ -17,11 +17,11 @@ const CategoryGrid = () => {
     <section className="py-24 bg-gradient-to-b from-white via-sky-50/50 to-cyan-50/50">
       <div className="max-w-7xl mx-auto px-8">
         {/* Section Title */}
-        <motion.div 
+        <motion.div
           className="text-center mb-20"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-100px", amount: 0.2 }}
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
@@ -36,12 +36,12 @@ const CategoryGrid = () => {
         </motion.div>
 
         {/* Category Cards Grid */}
-        <motion.div 
+        <motion.div
           className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-100px", amount: 0.1 }}
         >
           {blogData.categories.map((category) => (
             <CategoryCard key={category.id} category={category} />
@@ -104,6 +104,7 @@ const CategoryCard = ({ category }) => {
               className="flex items-start gap-3"
               initial={{ opacity: 0, x: -10 }}
               whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-50px", amount: 0.2 }}
               transition={{ delay: index * 0.1 }}
             >
               <div className={`mt-1.5 w-2 h-2 rounded-full bg-gradient-to-r ${category.color} flex-shrink-0`} />
