@@ -34,9 +34,12 @@ import phase5Image from '../images/phase-images/phase-5.jpg';
 import phase6Image from '../images/phase-images/phase-6.jpg';
 
 // Import article thumbnail images (for Recommended Logs cards)
-import image2 from '../images/article-images/the-connected-narrative-aEv8ednzJ2E-unsplash.jpg';
-import image3 from '../images/article-images/icons8-team-CrW-TbykPBQ-unsplash.jpg';
-import image1 from '../images/article-images/tim-van-der-kuip-CPs2X8JYmS8-unsplash.jpg';
+import article1 from '../images/article-images/article-1.jpg';
+import article2 from '../images/article-images/article-2.jpg';
+import article3 from '../images/article-images/article-3.jpg';
+import article4 from '../images/article-images/article-4.jpg';
+import article5 from '../images/article-images/article-5.jpg';
+import article6 from '../images/article-images/article-6.jpg';
 
 // Phase images array - each index corresponds to a phase
 const phaseImages = [
@@ -49,7 +52,24 @@ const phaseImages = [
 ];
 
 // Article thumbnail images for Recommended Logs cards
-const articleImages = [image1, image2, image3];
+const articleImages = [article1, article2, article3, article4, article5, article6];
+
+// Randomly shuffle function for article images
+const getRandomArticleImage = (articleId, index) => {
+  // Create a deterministic but seemingly random selection based on article ID
+  // This ensures the same article always gets the same image (good for preloading)
+  // Uses a simple hash-like function to distribute images more randomly
+  let hash = 0;
+  const str = articleId + index.toString();
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32-bit integer
+  }
+  // Make sure we get a positive number
+  const imageIndex = Math.abs(hash) % articleImages.length;
+  return articleImages[imageIndex];
+};
 
 // Icon mapping for each phase
 const phaseIcons = {
@@ -193,44 +213,53 @@ const FiberOpticTimeline = () => {
   );
 };
 
+// ... existing imports ...
+
 const TimelineNode = ({ step, index, containerRef }) => {
   const nodeRef = useRef(null);
-  // Phase 1 (index 0): 图片在右，文字在左
-  // Phase 2 (index 1): 图片在左，文字在右
-  // Phase 3 (index 2): 图片在右，文字在左
-  // 奇数索引 (0, 2, 4): 图片在右，文字在左
-  // 偶数索引 (1, 3, 5): 图片在左，文字在右
-  const imageOnRight = index % 2 === 0; // Phase 1, 3, 5: image right
+  const imageOnRight = index % 2 === 0;
   const PhaseIcon = phaseIcons[step.step] || Terminal;
   
-  // Get relevant articles
   const articles = blogData.articles.filter(article => 
     step.articles.includes(article.id)
-  ).slice(0, 3); // Top 3 articles
+  ).slice(0, 3);
 
-  // Calculate progress relative to this specific node
+  // Full viewport tracking for bi-directional fade
+  // Offset adjusted so animation starts when element is 15% from bottom of viewport
   const { scrollYProgress } = useScroll({
     target: nodeRef,
-    offset: ["start center", "end center"]
+    offset: ["start 85%", "end 15%"] // progress = 0 at 85% viewport (15% from bottom), progress = 1 at 15% viewport
   });
 
-  // Transform scroll progress into activation state (0 to 1)
-  const isActive = useTransform(scrollYProgress, [0, 0.5, 1], [0, 1, 1]);
-  const width = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+  // Map scroll progress to opacity/y/scale for enter/exit animations
+  // [0, 0.2]: Fade In (enter from bottom)
+  // [0.2, 0.8]: Stay Visible
+  // [0.8, 1]: Fade Out (exit to top)
+  const opacity = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0, 1, 1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0.8, 1, 1, 0.8]);
+  const y = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [100, 0, 0, -100]);
+
+  // Node Hub specific animations - Optimized
+  const hubScale = useTransform(scrollYProgress, [0.2, 0.5, 0.8], [1, 1.2, 1]);
+  const hubBorderColor = useTransform(scrollYProgress, [0.2, 0.5, 0.8], ["rgb(241, 245, 249)", "rgb(34, 211, 238)", "rgb(241, 245, 249)"]);
+  // Removed expensive box-shadow animation
+  const hubIconColor = useTransform(scrollYProgress, [0.2, 0.5, 0.8], ["rgb(148, 163, 184)", "rgb(14, 165, 233)", "rgb(148, 163, 184)"]);
 
   return (
-    <div ref={nodeRef} className="relative grid md:grid-cols-2 gap-12 md:gap-32 items-center min-h-[400px]">
+    <motion.div 
+      ref={nodeRef} 
+      className="relative grid md:grid-cols-2 gap-12 md:gap-32 items-center min-h-[400px]"
+      style={{ opacity, scale, y }} // Driven directly by scroll
+    >
       
       {/* Central Node (Hub) */}
       <div className="absolute left-4 md:left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
         <motion.div 
           className="relative w-16 h-16 rounded-full flex items-center justify-center bg-white border-4 border-slate-100 shadow-lg"
-          initial={{ scale: 1 }}
           style={{
-            borderColor: useTransform(scrollYProgress, [0, 0.5], ["rgb(241, 245, 249)", "rgb(34, 211, 238)"]), // slate-100 to cyan-400
-            boxShadow: useTransform(scrollYProgress, [0, 0.5], ["0 4px 6px -1px rgba(0, 0, 0, 0.1)", "0 0 30px rgba(34, 211, 238, 0.6)"]),
-            scale: useTransform(scrollYProgress, [0, 0.5, 1], [1, 1.2, 1]),
-            willChange: 'transform, border-color, box-shadow',
+            borderColor: hubBorderColor,
+            scale: hubScale,
+            willChange: 'transform, border-color',
             backfaceVisibility: 'hidden'
           }}
           layout={false}
@@ -238,7 +267,7 @@ const TimelineNode = ({ step, index, containerRef }) => {
           <PhaseIcon 
             className="w-7 h-7 text-slate-400" 
             style={{
-              color: useTransform(scrollYProgress, [0, 0.5], ["rgb(148, 163, 184)", "rgb(14, 165, 233)"]), // slate-400 to sky-500
+              color: hubIconColor,
               willChange: 'color'
             }} 
             strokeWidth={2} 
@@ -246,131 +275,126 @@ const TimelineNode = ({ step, index, containerRef }) => {
         </motion.div>
       </div>
 
-      {/* Left Column - Text when imageOnRight, Image when !imageOnRight */}
+      {/* Left Column */}
       <div className={`pl-16 md:pl-0 ${imageOnRight ? 'md:col-start-1 md:pr-8' : 'md:col-start-1 md:pr-8'}`}>
         {imageOnRight ? (
           <ContentCard step={step} articles={articles} isRightAligned={false} scrollYProgress={scrollYProgress} />
         ) : (
-          <ImageCard step={step} icon={PhaseIcon} index={index} />
+          <ImageCard step={step} icon={PhaseIcon} index={index} scrollYProgress={scrollYProgress} />
         )}
       </div>
 
-      {/* Right Column - Image when imageOnRight, Text when !imageOnRight */}
+      {/* Right Column */}
       <div className={`pl-16 md:pl-0 ${imageOnRight ? 'md:col-start-2 md:pl-8' : 'md:col-start-2 md:pl-8'}`}>
         {imageOnRight ? (
-          <ImageCard step={step} icon={PhaseIcon} index={index} />
+          <ImageCard step={step} icon={PhaseIcon} index={index} scrollYProgress={scrollYProgress} />
         ) : (
           <ContentCard step={step} articles={articles} isRightAligned={false} scrollYProgress={scrollYProgress} />
         )}
       </div>
 
-    </div>
+    </motion.div>
   );
 };
 
 const ContentCard = ({ step, articles, isRightAligned, scrollYProgress }) => {
-  // Transform scroll progress to determine if phase is active (when progress > 0.4)
-  // When blue fill passes through, the tag should turn blue-dominant
-  const isActive = useTransform(scrollYProgress, [0, 0.4, 0.6, 1], [0, 0, 1, 1]);
+  // Content activation based on scroll
+  const isActive = useTransform(scrollYProgress, [0.2, 0.4, 0.6, 0.8], [0, 1, 1, 0]);
+  const contentX = useTransform(scrollYProgress, [0, 0.15], isRightAligned ? [50, 0] : [-50, 0]); // Slight slide in
+
+  // Recommended Logs Horizontal Slide-in Animation
+  // Each card slides in at a slightly different scroll threshold
+  const card1X = useTransform(scrollYProgress, [0.1, 0.25], [100, 0]);
+  const card2X = useTransform(scrollYProgress, [0.15, 0.3], [100, 0]);
+  const card3X = useTransform(scrollYProgress, [0.2, 0.35], [100, 0]);
   
-  // Interpolate colors based on activation
-  // From slate (inactive) to sky blue (active)
-  const bgColor = useTransform(
-    isActive,
-    [0, 1],
-    ["rgb(241, 245, 249)", "rgb(224, 242, 254)"] // slate-100 to sky-100
-  );
-  const textColor = useTransform(
-    isActive,
-    [0, 1],
-    ["rgb(71, 85, 105)", "rgb(3, 105, 161)"] // slate-600 to sky-700
-  );
+  const card1Opacity = useTransform(scrollYProgress, [0.1, 0.25], [0, 1]);
+  const card2Opacity = useTransform(scrollYProgress, [0.15, 0.3], [0, 1]);
+  const card3Opacity = useTransform(scrollYProgress, [0.2, 0.35], [0, 1]);
+
+  // Interpolate colors
+  const bgColor = useTransform(scrollYProgress, [0.2, 0.4, 0.6], ["rgb(241, 245, 249)", "rgb(224, 242, 254)", "rgb(241, 245, 249)"]);
+  const textColor = useTransform(scrollYProgress, [0.2, 0.4, 0.6], ["rgb(71, 85, 105)", "rgb(3, 105, 161)", "rgb(71, 85, 105)"]);
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
       className={`space-y-4 ${isRightAligned ? 'md:items-end' : 'md:items-start'}`}
+      style={{ x: contentX }} // Base slide for whole content
     >
-      {/* Phase Tag - Dynamic color based on scroll progress */}
+      {/* Phase Tag */}
       <motion.div 
         className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-mono font-bold ${isRightAligned ? 'md:ml-auto' : ''}`}
-        initial={{ backgroundColor: "rgb(241, 245, 249)", color: "rgb(71, 85, 105)" }}
         style={{
           backgroundColor: bgColor,
           color: textColor,
-          willChange: 'background-color, color',
-          backfaceVisibility: 'hidden'
+          willChange: 'background-color, color'
         }}
-        layout={false}
       >
         {step.step}
       </motion.div>
 
-      {/* Title */}
+      {/* Title & Desc */}
       <h3 className="text-2xl md:text-3xl font-bold text-slate-900">
         {step.title}
       </h3>
       <p className="text-lg text-cyan-700 font-medium">{step.subtitle}</p>
       
-      {/* Description */}
       <p className="text-slate-600 leading-relaxed">
         {step.description}
       </p>
 
-      {/* Articles List - Three Cards with Images */}
+      {/* Articles List - Horizontal Slide In */}
       <div className="pt-6 space-y-4">
         <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">
           Recommended Logs
         </p>
-        <div className="grid grid-cols-1 gap-3">
-          {articles.map((article, i) => (
-            <motion.div 
-              key={article.id}
-              className="group relative rounded-xl border-2 border-slate-100 bg-white hover:border-sky-200 hover:shadow-lg transition-all cursor-pointer overflow-hidden"
-              initial={{ opacity: 0, y: 20, scale: 0.95 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ 
-                delay: i * 0.15, 
-                duration: 0.5, 
-                ease: [0.22, 1, 0.36, 1] // 自定义缓动曲线，更流畅
-              }}
-              whileHover={{ scale: 1.02, y: -2 }}
-            >
-              <div className="flex items-center gap-4 p-4">
-                {/* Thumbnail Image - Preloaded */}
-                <div className="relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border border-slate-200 bg-slate-100">
-                  <img 
-                    src={articleImages[i % 3]} 
-                    alt={article.title}
-                    decoding="async"
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    style={{
-                      willChange: 'transform',
-                      backfaceVisibility: 'hidden'
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-sky-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="grid grid-cols-1 gap-3 overflow-visible">
+          {articles.map((article, i) => {
+            // Select transform based on index
+            const x = i === 0 ? card1X : i === 1 ? card2X : card3X;
+            const opacity = i === 0 ? card1Opacity : i === 1 ? card2Opacity : card3Opacity;
+            
+            return (
+              <motion.div 
+                key={article.id}
+                className="group relative rounded-xl border-2 border-slate-100 bg-white hover:border-sky-200 hover:shadow-lg transition-all cursor-pointer"
+                style={{ 
+                  x, 
+                  opacity,
+                  willChange: 'transform, opacity' // Hint browser to optimize
+                }}
+                whileHover={{ scale: 1.02, x: 10 }}
+              >
+                <div className="flex items-center gap-4 p-4">
+                  {/* Thumbnail Image */}
+                  <div className="relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border border-slate-200 bg-slate-100">
+                    <img 
+                      src={getRandomArticleImage(article.id, i)} 
+                      alt={article.title}
+                      decoding="async"
+                      loading="eager" // Ensure it's ready since preloaded
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      style={{ willChange: 'transform' }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-sky-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </div>
+                  
+                  {/* Text Content */}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-sm font-semibold text-slate-800 group-hover:text-cyan-600 transition-colors line-clamp-2">
+                      {article.title}
+                    </h4>
+                    <p className="text-xs text-slate-500 mt-1 font-mono">
+                      {article.category}
+                    </p>
+                  </div>
+                  
+                  {/* Arrow Icon */}
+                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-cyan-500 group-hover:translate-x-1 transition-all flex-shrink-0" />
                 </div>
-                
-                {/* Text Content */}
-                <div className="flex-1 min-w-0">
-                  <h4 className="text-sm font-semibold text-slate-800 group-hover:text-cyan-600 transition-colors line-clamp-2">
-                    {article.title}
-                  </h4>
-                  <p className="text-xs text-slate-500 mt-1 font-mono">
-                    {article.category}
-                  </p>
-                </div>
-                
-                {/* Arrow Icon */}
-                <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-cyan-500 group-hover:translate-x-1 transition-all flex-shrink-0" />
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
       </div>
 
@@ -388,32 +412,37 @@ const ContentCard = ({ step, articles, isRightAligned, scrollYProgress }) => {
   );
 };
 
-const ImageCard = ({ step, icon: Icon, index }) => {
-  // Each phase uses its corresponding image from phaseImages array
-  const imageUrl = phaseImages[index] || phase1Image; // Fallback to phase1Image if index out of range
+const ImageCard = ({ step, icon: Icon, index, scrollYProgress }) => {
+  const imageUrl = phaseImages[index] || phase1Image;
+  
+  // Image specific parallax/fade
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.9, 1, 0.9]);
   
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
       className="hidden md:block h-full"
+      style={{ 
+        scale,
+        willChange: 'transform' // Hint optimization
+      }}
     >
       <div className={`relative w-full aspect-[4/3] rounded-2xl overflow-hidden border-2 border-slate-100 bg-slate-100 shadow-xl group hover:shadow-2xl hover:border-sky-200 transition-all duration-300`}>
-        {/* Preloaded Image - No lazy loading needed */}
+        {/* Preloaded Image - Optimized */}
         <img 
           src={imageUrl} 
           alt={`${step.title} illustration`}
+          decoding="async"
+          loading="eager"
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 relative z-10"
           style={{
             backfaceVisibility: 'hidden',
-            transform: 'translate3d(0, 0, 0)'
+            transform: 'translate3d(0, 0, 0)',
+            willChange: 'transform'
           }}
         />
         
-        {/* Gradient Overlay */}
-        <div className={`absolute inset-0 bg-gradient-to-br ${step.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
+        {/* Gradient Overlay - Optimized opacity transition */}
+        <div className={`absolute inset-0 bg-gradient-to-br ${step.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} style={{ willChange: 'opacity' }} />
         
         {/* Bottom Info Bar */}
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-slate-900/80 via-slate-900/50 to-transparent p-6 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
@@ -428,7 +457,7 @@ const ImageCard = ({ step, icon: Icon, index }) => {
           </div>
         </div>
 
-        {/* Corner Accents */}
+        {/* Corner Accents - Simplified */}
         <div className="absolute top-4 left-4 w-3 h-3 border-t-2 border-l-2 border-white/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         <div className="absolute top-4 right-4 w-3 h-3 border-t-2 border-r-2 border-white/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         <div className="absolute bottom-4 left-4 w-3 h-3 border-b-2 border-l-2 border-white/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
