@@ -272,7 +272,7 @@ const TimelineNode = ({ step, index, scrollYProgress }) => {
         )}
       </div>
 
-    </motion.div>
+    </div>
   );
 };
 
@@ -370,8 +370,12 @@ const ContentCard = ({ step, articles, isActive }) => {
   );
 };
 
-const ImageCard = ({ step, icon: Icon, index }) => {
+const ImageCard = ({ step, icon: Icon, index, scrollYProgress }) => {
   const imageUrl = phaseImages[index] || phase1Image;
+
+  // Image specific parallax/fade animation (subtle scale effect)
+  // scrollYProgress is provided from TimelineNode which gets it from FiberOpticTimeline
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.9, 1, 0.9]);
 
   return (
     <motion.div
