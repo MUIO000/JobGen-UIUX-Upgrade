@@ -15,13 +15,13 @@ const useImagePreloader = (imageUrls) => {
       // Still wait 2 seconds even if no images
       const timer = setTimeout(() => {
         setLoading(false);
-      }, 2000);
+      }, 1000);
       setProgress(100);
       return () => clearTimeout(timer);
     }
 
     const startTime = Date.now();
-    const MINIMUM_DISPLAY_TIME = 2000; // 2 seconds minimum
+    const MINIMUM_DISPLAY_TIME = 1000; // 2 seconds minimum
     let loadedCount = 0;
     const totalImages = imageUrls.length;
     const imagePromises = [];

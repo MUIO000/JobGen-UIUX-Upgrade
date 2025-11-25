@@ -85,12 +85,12 @@ const FiberOpticTimeline = () => {
     if (latest === null || latest === undefined || isNaN(latest)) return 0;
     return Math.max(0, Math.min(1, latest));
   });
-  
-  const scaleY = useSpring(clampedProgress, {
+  const minProgress = useTransform(clampedProgress, v => 0.01 + v * 0.99);
+  const scaleY = useSpring(minProgress, {
     stiffness: 100,
     damping: 30,
-    restDelta: 0.001,
-    mass: 1,
+    restDelta: 0.0001,
+    mass: 0.5,
     restSpeed: 0.01
   });
 
@@ -149,7 +149,8 @@ const FiberOpticTimeline = () => {
           {/* Flowing liquid fill - Animated via Framer Motion */}
           <motion.div 
             className="absolute left-0 right-0 top-0 bottom-0 bg-gradient-to-b from-cyan-400 via-blue-500 to-indigo-600 rounded-full origin-top"
-            initial={{ scaleY: 0 }}
+            // initial={{ scaleY: 0 }}
+            initial={false}
             style={{ 
               scaleY: scaleY,
               boxShadow: '0 0 20px rgba(6, 182, 212, 0.4)',
@@ -329,8 +330,15 @@ const ContentCard = ({ step, articles, isRightAligned, scrollYProgress }) => {
             <motion.div 
               key={article.id}
               className="group relative rounded-xl border-2 border-slate-100 bg-white hover:border-sky-200 hover:shadow-lg transition-all cursor-pointer overflow-hidden"
+              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ 
+                delay: i * 0.15, 
+                duration: 0.5, 
+                ease: [0.22, 1, 0.36, 1] // 自定义缓动曲线，更流畅
+              }}
               whileHover={{ scale: 1.02, y: -2 }}
-              transition={{ delay: i * 0.05, duration: 0.3 }}
             >
               <div className="flex items-center gap-4 p-4">
                 {/* Thumbnail Image - Preloaded */}
@@ -338,6 +346,7 @@ const ContentCard = ({ step, articles, isRightAligned, scrollYProgress }) => {
                   <img 
                     src={articleImages[i % 3]} 
                     alt={article.title}
+                    decoding="async"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     style={{
                       willChange: 'transform',
