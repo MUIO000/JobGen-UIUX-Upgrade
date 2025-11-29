@@ -52,12 +52,12 @@ const phaseImages = [
 const articleImages = [article1, article2, article3, article4, article5, article6];
 
 // Randomly shuffle function for article images
-const getRandomArticleImage = (articleId, index) => {
+const getRandomArticleImage = (articleId) => {
   // Create a deterministic but seemingly random selection based on article ID
   // This ensures the same article always gets the same image (good for preloading)
   // Uses a simple hash-like function to distribute images more randomly
   let hash = 0;
-  const str = articleId + index.toString();
+  const str = articleId;
   for (let i = 0; i < str.length; i++) {
     const char = str.charCodeAt(i);
     hash = ((hash << 5) - hash) + char;
@@ -348,7 +348,7 @@ const ArticleCard = ({ article, index }) => {
         {/* Thumbnail Image - Optimized */}
         <div className="relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 border border-slate-200 bg-slate-100">
           <img
-            src={articleImages[index % 3]}
+            src={getRandomArticleImage(article.id)}
             alt={article.title}
             decoding="async"
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"

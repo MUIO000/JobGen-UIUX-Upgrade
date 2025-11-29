@@ -4,6 +4,34 @@ import { ArrowLeft, Calendar, Clock, User, Tag, ArrowRight, Share2, Bookmark } f
 import BlogLayout from './BlogLayout';
 import blogData from '../../data/blogData.json';
 import { useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
+
+// Import article thumbnail images (same as TimelineSection)
+import article1 from './images/article-images/article-1.jpg';
+import article2 from './images/article-images/article-2.jpg';
+import article3 from './images/article-images/article-3.jpg';
+import article4 from './images/article-images/article-4.jpg';
+import article5 from './images/article-images/article-5.jpg';
+import article6 from './images/article-images/article-6.jpg';
+
+// Article thumbnail images array
+const articleImages = [article1, article2, article3, article4, article5, article6];
+
+// Get article image based on articleId (same logic as TimelineSection)
+const getArticleImage = (articleId) => {
+  // Create a deterministic but seemingly random selection based on article ID
+  // This ensures the same article always gets the same image
+  let hash = 0;
+  const str = articleId;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32-bit integer
+  }
+  // Make sure we get a positive number
+  const imageIndex = Math.abs(hash) % articleImages.length;
+  return articleImages[imageIndex];
+};
 
 const ArticlePage = () => {
   const { articleId } = useParams();
@@ -23,6 +51,9 @@ const ArticlePage = () => {
   const phase = blogData.timeline.find(p => p.articles.includes(articleId));
   const category = blogData.categories.find(c => c.id === article.category);
   
+  // Get cover image - use article's own image (same as Recommended Logs cards)
+  const coverImage = getArticleImage(articleId);
+  
   // Filter related articles
   const relatedArticles = blogData.articles
     .filter(a => a.category === article.category && a.id !== articleId)
@@ -36,13 +67,10 @@ const ArticlePage = () => {
     relatedArticles.push(...others);
   }
 
-  // Default content if missing in JSON (as per user instruction, text should be in JSON, but fallback is safe)
-  const content = article.content || [
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-  ];
+  // Combine content array into a single markdown string if it's an array
+  const content = Array.isArray(article.content) 
+    ? article.content.join('\n\n') 
+    : (article.content || "Content not available.");
 
   const navigateToBlog = (target = '/blog') => {
     if (sessionStorage.getItem('blogScrollPosition')) {
@@ -107,21 +135,36 @@ const ArticlePage = () => {
 
         {/* Main Content */}
         <div className="max-w-4xl mx-auto px-6 py-12">
+          {/* Cover Image */}
           <motion.div 
-            className="prose prose-lg prose-slate mx-auto"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            className="mb-12 rounded-2xl overflow-hidden shadow-lg aspect-video"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            {Array.isArray(content) ? (
-              content.map((paragraph, idx) => (
-                <p key={idx} className="mb-6 text-slate-700 leading-relaxed">
-                  {paragraph}
-                </p>
-              ))
-            ) : (
-              <div dangerouslySetInnerHTML={{ __html: content }} />
-            )}
+            <img 
+              src={coverImage} 
+              alt={article.title}
+              className="w-full h-full object-cover"
+            />
+          </motion.div>
+
+          <motion.div 
+            className="prose prose-lg prose-slate mx-auto prose-headings:font-bold prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-6 prose-p:text-slate-700 prose-p:leading-relaxed prose-a:text-sky-600 prose-a:no-underline hover:prose-a:underline"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            <ReactMarkdown 
+              components={{
+                // Custom renderer for links to add styling classes if needed (though prose handles most)
+                a: ({node, ...props}) => (
+                  <a {...props} className="text-sky-600 font-bold hover:underline transition-colors" />
+                )
+              }}
+            >
+              {content}
+            </ReactMarkdown>
           </motion.div>
 
           {/* Product CTA - Important feature */}
@@ -169,25 +212,37 @@ const ArticlePage = () => {
             </div>
             
             <div className="grid md:grid-cols-3 gap-6">
-              {relatedArticles.map((item) => (
+              {relatedArticles.map((item, index) => (
                 <div 
                   key={item.id}
                   onClick={() => navigate(`/blog/article/${item.id}`)}
-                  className="bg-white rounded-xl p-6 shadow-sm border border-slate-200 hover:shadow-md hover:border-sky-200 transition-all cursor-pointer group"
+                  className="bg-white rounded-xl overflow-hidden shadow-sm border border-slate-200 hover:shadow-md hover:border-sky-200 transition-all cursor-pointer group"
                 >
-                  <div className="text-xs font-mono text-slate-500 mb-3 flex items-center gap-2">
-                    <span className={`w-2 h-2 rounded-full bg-gradient-to-r ${blogData.categories.find(c => c.id === item.category)?.color}`} />
-                    {blogData.categories.find(c => c.id === item.category)?.name}
+                  {/* Article Cover Image */}
+                  <div className="relative w-full h-48 overflow-hidden bg-slate-100">
+                    <img 
+                      src={getArticleImage(item.id)}
+                      alt={item.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </div>
-                  <h3 className="font-bold text-lg text-slate-900 mb-2 group-hover:text-sky-600 transition-colors line-clamp-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-slate-600 text-sm line-clamp-3 mb-4">
-                    {item.excerpt}
-                  </p>
-                  <div className="flex items-center justify-between text-xs text-slate-400 mt-auto">
-                    <span>{item.readTime}</span>
-                    <span className="group-hover:translate-x-1 transition-transform text-sky-500">Read Article →</span>
+                  
+                  <div className="p-6">
+                    <div className="text-xs font-mono text-slate-500 mb-3 flex items-center gap-2">
+                      <span className={`w-2 h-2 rounded-full bg-gradient-to-r ${blogData.categories.find(c => c.id === item.category)?.color}`} />
+                      {blogData.categories.find(c => c.id === item.category)?.name}
+                    </div>
+                    <h3 className="font-bold text-lg text-slate-900 mb-2 group-hover:text-sky-600 transition-colors line-clamp-2">
+                      {item.title}
+                    </h3>
+                    <p className="text-slate-600 text-sm line-clamp-3 mb-4">
+                      {item.excerpt}
+                    </p>
+                    <div className="flex items-center justify-between text-xs text-slate-400 mt-auto">
+                      <span>{item.readTime}</span>
+                      <span className="group-hover:translate-x-1 transition-transform text-sky-500">Read Article →</span>
+                    </div>
                   </div>
                 </div>
               ))}
