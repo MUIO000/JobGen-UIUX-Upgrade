@@ -1,6 +1,6 @@
 import { useParams, Navigate, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Calendar, Clock, User, Tag, ArrowRight, Share2, Bookmark, Sparkles } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, User, Tag, ArrowRight, Share2, Bookmark, Sparkles, Briefcase } from 'lucide-react';
 import BlogLayout from './BlogLayout';
 import blogData from '../../data/blogData.json';
 import { useEffect, useState, useMemo } from 'react';
@@ -206,19 +206,19 @@ const ArticlePage = () => {
             {headings.length > 0 && (
               <aside className="hidden lg:block w-64 flex-shrink-0">
                 <div className="sticky top-24">
-                  <nav className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
-                    <h3 className="text-sm font-bold text-slate-900 mb-4 uppercase tracking-wider">
+                  <nav className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+                    <h3 className="text-xs font-bold text-slate-900 mb-4 uppercase tracking-wider px-1">
                       目录
                     </h3>
-                    <ul className="space-y-2">
+                    <ul className="space-y-1">
                       {headings.map((heading) => (
                         <li key={heading.id}>
                           <button
                             onClick={() => scrollToHeading(heading.id)}
-                            className={`text-left w-full px-3 py-2 rounded-lg text-sm transition-all ${
+                            className={`outline-none text-left w-full px-3 py-2.5 rounded-lg text-sm transition-all relative ${
                               activeHeading === heading.id
-                                ? 'bg-sky-50 text-sky-600 font-semibold border-l-2 border-sky-600'
-                                : 'text-slate-600 hover:text-sky-600 hover:bg-slate-50'
+                                ? 'bg-sky-50 text-sky-600 font-semibold before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-1 before:h-8 before:bg-sky-600 before:rounded-r-full'
+                                : 'text-slate-600 hover:text-sky-600 hover:bg-slate-50/80 font-normal'
                             }`}
                           >
                             {heading.text}
@@ -232,7 +232,7 @@ const ArticlePage = () => {
             )}
 
             {/* Main Article Content */}
-            <div className="flex-1 max-w-4xl mx-auto">
+            <div className="flex-1 max-w-4xl">
               {/* Cover Image */}
               <motion.div 
                 className="mb-12 rounded-2xl overflow-hidden shadow-lg aspect-video"
@@ -324,67 +324,77 @@ const ArticlePage = () => {
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.4 }}
-                  className="bg-gradient-to-br from-teal-900 via-teal-800 to-teal-900 rounded-2xl overflow-hidden shadow-2xl border border-teal-700/50"
+                  className="bg-white rounded-2xl overflow-hidden shadow-lg border border-sky-100"
                 >
                   {/* Background decorative elements */}
-                  <div className="absolute top-0 right-0 w-64 h-64 bg-yellow-400/10 rounded-full blur-3xl -mr-32 -mt-32" />
-                  <div className="absolute bottom-0 left-0 w-48 h-48 bg-cyan-400/10 rounded-full blur-2xl -ml-24 -mb-24" />
-                  
-                  <div className="relative p-8 text-white">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-sky-100/50 rounded-full blur-3xl -mr-32 -mt-32" />
+                  <div className="absolute bottom-0 left-0 w-48 h-48 bg-cyan-100/50 rounded-full blur-2xl -ml-24 -mb-24" />
+
+                  <div className="relative p-8">
+                    {/* JobGen Logo */}
+                    <div className="flex items-center gap-2 mb-6">
+                      <div className="w-10 h-10 bg-gradient-to-br from-sky-500 to-cyan-600 rounded-lg flex items-center justify-center shadow-md">
+                        <Briefcase className="w-6 h-6 text-white" />
+                      </div>
+                      <span className="text-2xl font-bold bg-gradient-to-r from-sky-600 to-cyan-600 bg-clip-text text-transparent">
+                        JobGen
+                      </span>
+                    </div>
+
                     {/* Mock screen preview */}
-                    <div className="mb-6 bg-slate-900 rounded-lg p-4 shadow-inner border border-slate-700/50">
-                      <div className="flex items-center gap-2 mb-3 pb-3 border-b border-slate-700">
-                        <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                        <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                        <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                    <div className="mb-6 bg-gradient-to-br from-slate-50 to-sky-50 rounded-xl p-4 shadow-inner border border-sky-100">
+                      <div className="flex items-center gap-2 mb-3 pb-3 border-b border-sky-200">
+                        <div className="w-2.5 h-2.5 rounded-full bg-red-400"></div>
+                        <div className="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
+                        <div className="w-2.5 h-2.5 rounded-full bg-green-400"></div>
                         <div className="flex-1"></div>
-                        <div className="text-xs text-slate-400 font-mono">JobGen</div>
+                        <div className="text-xs text-sky-600 font-semibold">Resume Analyzer</div>
                       </div>
                       <div className="space-y-2">
-                        <div className="h-2 bg-slate-700 rounded w-3/4"></div>
-                        <div className="h-2 bg-slate-700 rounded w-1/2"></div>
-                        <div className="h-2 bg-slate-700 rounded w-5/6"></div>
+                        <div className="h-2 bg-sky-200 rounded w-3/4"></div>
+                        <div className="h-2 bg-sky-200 rounded w-1/2"></div>
+                        <div className="h-2 bg-sky-200 rounded w-5/6"></div>
                       </div>
                       {/* Analysis cards overlay */}
                       <div className="mt-4 space-y-3">
-                        <div className="bg-yellow-400/20 border-2 border-yellow-400 rounded-lg p-3">
+                        <div className="bg-white border-2 border-sky-400 rounded-lg p-3 shadow-sm">
                           <div className="flex items-center justify-center mb-2">
-                            <div className="w-16 h-16 rounded-full border-4 border-teal-500 flex items-center justify-center">
-                              <span className="text-yellow-400 font-bold text-lg">79%</span>
+                            <div className="w-16 h-16 rounded-full border-4 border-sky-500 bg-white flex items-center justify-center shadow-md">
+                              <span className="text-sky-600 font-bold text-lg">79%</span>
                             </div>
                           </div>
-                          <div className="text-xs text-slate-300 text-center">Overall Score</div>
+                          <div className="text-xs text-slate-600 text-center font-semibold">Overall Score</div>
                         </div>
-                        <div className="bg-slate-800/50 rounded-lg p-2 space-y-1.5">
+                        <div className="bg-white/80 rounded-lg p-2.5 space-y-2 border border-sky-100">
                           <div className="flex items-center justify-between text-xs">
-                            <span className="text-slate-400">Resume Structure</span>
-                            <div className="w-16 h-1.5 bg-red-500 rounded"></div>
+                            <span className="text-slate-600 font-medium">Resume Structure</span>
+                            <div className="w-16 h-1.5 bg-gradient-to-r from-red-400 to-red-500 rounded-full"></div>
                           </div>
                           <div className="flex items-center justify-between text-xs">
-                            <span className="text-slate-400">Measurable Results</span>
-                            <div className="w-20 h-1.5 bg-blue-500 rounded"></div>
+                            <span className="text-slate-600 font-medium">Measurable Results</span>
+                            <div className="w-20 h-1.5 bg-gradient-to-r from-sky-400 to-sky-500 rounded-full"></div>
                           </div>
                           <div className="flex items-center justify-between text-xs">
-                            <span className="text-slate-400">Keyword Usage</span>
-                            <div className="w-14 h-1.5 bg-yellow-500 rounded"></div>
+                            <span className="text-slate-600 font-medium">Keyword Usage</span>
+                            <div className="w-14 h-1.5 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full"></div>
                           </div>
                         </div>
                       </div>
                     </div>
 
                     {/* CTA Content */}
-                    <h3 className="text-2xl font-bold mb-3 leading-tight">
+                    <h3 className="text-xl font-bold mb-3 leading-tight text-slate-900">
                       Build a Resume That Gets You Hired 58% Faster
                     </h3>
-                    <p className="text-teal-100 text-sm mb-6 leading-relaxed">
+                    <p className="text-slate-600 text-sm mb-6 leading-relaxed">
                       In minutes, create a tailored, ATS-friendly resume proven to land 6X more interviews.
                     </p>
                     <button
                       onClick={() => navigate('/resumes-builder')}
-                      className="w-full bg-yellow-400 hover:bg-yellow-300 text-slate-900 font-bold py-4 px-6 rounded-xl transition-all shadow-lg hover:shadow-yellow-400/25 hover:scale-105 flex items-center justify-center gap-2"
+                      className="w-full bg-gradient-to-r from-sky-500 to-cyan-600 hover:from-sky-600 hover:to-cyan-700 text-white font-bold py-4 px-6 rounded-xl transition-all shadow-lg hover:shadow-sky-500/30 hover:scale-105 flex items-center justify-center gap-2"
                     >
                       <Sparkles className="w-5 h-5" />
-                      Build a better resume
+                      Build Better Resume
                     </button>
                   </div>
                 </motion.div>
